@@ -127,7 +127,6 @@ const query_pinned_projects = {
 };
 
 const baseUrl = "https://api.github.com/graphql";
-
 const headers = {
   "Content-Type": "application/json",
   Authorization: "bearer " + openSource.githubConvertedToken,
@@ -143,7 +142,6 @@ fetch(baseUrl, {
     const data = JSON.parse(txt);
     var cropped = { data: [] };
     cropped["data"] = data["data"]["user"]["pullRequests"]["nodes"];
-
     var open = 0;
     var closed = 0;
     var merged = 0;
