@@ -9,7 +9,7 @@ const settings = {
 const seo = {
   title: "Brian's Portfolio",
   description:
-    "Detail-oriented Software Engineer with over five years of experience in designing, developing, and implementing software solutions. Skilled in various programming languages and technologies, with a strong ability to solve problems and collaborate with cross-functional teams.",
+    "Experienced Software Engineer with a proven track record of over 5 years in designing, developing, and implementing robust software solutions. I'm proficient in a range of programming languages, frameworks, and technologies, including Java, Python, Spring Boot, MySQL, and more. Adept at problem-solving, optimizing code performance, and collaborating effectively with cross-functional teams to deliver high-quality products. Strong background in agile methodologies, software architecture, and continuous integration/continuous deployment (CI/CD) pipelines.",
   og: {
     title: "Nahabwe Brian Portfolio",
     type: "website",
@@ -23,7 +23,7 @@ const greeting = {
   logo_name: "NahabweBrian",
   nickname: "The Sasaki",
   subTitle:
-    "Detail-oriented Software Engineer with over five years of experience in designing, developing, and implementing software solutions. Skilled in various programming languages and technologies, with a strong ability to solve problems and collaborate with cross-functional teams.",
+    "Experienced Software Engineer with a proven track record of over 5 years in designing, developing, and implementing robust software solutions. I'm proficient in a range of programming languages, frameworks, and technologies, including Java, Python, Spring Boot, MySQL, and more. Adept at problem-solving, optimizing code performance, and collaborating effectively with cross-functional teams to deliver high-quality products. Strong background in agile methodologies, software architecture, and continuous integration/continuous deployment (CI/CD) pipelines.",
   resumeLink:
     "https://drive.google.com/file/d/1Nmnc3s7Jvfuphh33D49PgP9Lk5azJ2gZ/view?usp=sharing",
   portfolio_repository:
@@ -40,7 +40,7 @@ const socialMediaLinks = [
   },
   {
     name: "LinkedIn",
-    link: "https://www.linkedin.com/in/nahabwe-brian-aaa790ba/",
+    link: "https://www.linkedin.com/in/nahabwe-brian/",
     fontAwesomeIcon: "fa-linkedin-in", // Reference https://fontawesome.com/icons/linkedin-in?style=brands
     backgroundColor: "#0077B5", // Reference https://simpleicons.org/?q=linkedin
   },
