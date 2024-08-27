@@ -9,7 +9,7 @@ const settings = {
 const seo = {
   title: "Brian's Portfolio",
   description:
-    "Experienced Software Engineer with a proven track record of over 5 years in designing, developing, and implementing robust software solutions. I'm proficient in a range of programming languages, frameworks, and technologies, including Java, Python, Spring Boot, MySQL, and more. Adept at problem-solving, optimizing code performance, and collaborating effectively with cross-functional teams to deliver high-quality products. Strong background in agile methodologies, software architecture, and continuous integration/continuous deployment (CI/CD) pipelines.",
+    "Experienced Software Engineer with a proven track record of over 5 years in designing, developing, and implementing robust software solutions. I'm proficient in a range of programming languages, frameworks, and technologies, including Java, Python, Spring Boot, MySQL, and more.",
   og: {
     title: "Nahabwe Brian Portfolio",
     type: "website",
@@ -23,7 +23,7 @@ const greeting = {
   logo_name: "NahabweBrian",
   nickname: "The Sasaki",
   subTitle:
-    "Experienced Software Engineer with a proven track record of over 5 years in designing, developing, and implementing robust software solutions. I'm proficient in a range of programming languages, frameworks, and technologies, including Java, Python, Spring Boot, MySQL, and more. Adept at problem-solving, optimizing code performance, and collaborating effectively with cross-functional teams to deliver high-quality products. Strong background in agile methodologies, software architecture, and continuous integration/continuous deployment (CI/CD) pipelines.",
+    "Experienced Software Engineer with a proven track record of over 5 years in designing, developing, and implementing robust software solutions. I'm proficient in a range of programming languages, frameworks, and technologies, including Java, Python, Spring Boot, MySQL, and more.",
   resumeLink:
     "https://drive.google.com/file/d/1Nmnc3s7Jvfuphh33D49PgP9Lk5azJ2gZ/view?usp=sharing",
   portfolio_repository:
