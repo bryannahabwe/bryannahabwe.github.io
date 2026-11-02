@@ -61,7 +61,10 @@ const graph = {
       author: { "@id": `${profile.site}/#person` },
       inLanguage: "en",
     },
-    ...schema,
+    // Google's Article rich results want an image; reuse the page's share image.
+    ...schema.map((node) =>
+      ["Article", "TechArticle"].includes(node["@type"] as string) && !node.image ? { ...node, image: [ogImageUrl] } : node
+    ),
   ],
 };
 ---
