@@ -1,0 +1,69 @@
+---
+import Icon from "./Icon.astro";
+import { skills } from "../data/expertise";
+---
+
+<div id="skills" class="block" aria-labelledby="skills-title">
+  <h2 id="skills-title" class="kicker">Technical Expertise</h2>
+  <p class="sub">A well-rounded skill set across the stack, with deep expertise in backend engineering and system design.</p>
+  <ul class="tiles" role="list">
+    {skills.map((s, i) => (
+      <li class="card tile" data-reveal style={`transition-delay: ${i * 40}ms`}>
+        <span class="icon"><Icon name={s.icon} size={24} mono={s.icon === "python"} /></span>
+        <span class="text">
+          <strong>{s.title}</strong>
+          <span>{s.detail}</span>
+        </span>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .sub {
+    margin-top: var(--s-2);
+    color: var(--ink-2);
+    font-size: var(--text-sm);
+  }
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.75rem), 1fr));
+    gap: var(--s-3);
+    margin-top: var(--s-5);
+    padding: 0;
+    list-style: none;
+  }
+  .tile {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding: var(--s-3);
+    transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+  .tile:hover {
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--rule));
+    transform: translateY(-2px);
+  }
+  .icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius);
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .text {
+    display: grid;
+    line-height: 1.35;
+  }
+  .text strong {
+    font-size: var(--text-sm);
+    font-weight: 650;
+  }
+  .text span {
+    font-size: var(--text-xs);
+    color: var(--ink-3);
+  }
+</style>

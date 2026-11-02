@@ -1,0 +1,173 @@
+---
+import Icon from "./Icon.astro";
+import { profile, socials } from "../data/profile";
+
+const linkedin = socials.find((s) => s.label === "LinkedIn")!;
+const github = socials.find((s) => s.label === "GitHub")!;
+const x = socials.find((s) => s.label === "X")!;
+const year = new Date().getFullYear();
+---
+
+<footer id="contact" class="site-footer" aria-labelledby="contact-title">
+  <div class="container top">
+    <div class="intro">
+      <h2 id="contact-title" class="title">Get In Touch</h2>
+      <p>
+        I'm open to hands-on engineering roles, collaborations and conversations about hard
+        integration problems. I usually reply within a day.
+      </p>
+      <a class="btn btn-primary btn-sm" href={`mailto:${profile.email}`}>Contact Me <Icon name="arrow" size={14} /></a>
+    </div>
+
+    <ul class="channels" role="list">
+      <li>
+        <a href={linkedin.href} target="_blank" rel="me noopener">
+          <Icon name="linkedin" size={22} />
+          <strong>LinkedIn</strong>
+          <span>Connect with me</span>
+        </a>
+      </li>
+      <li>
+        <a href={github.href} target="_blank" rel="me noopener">
+          <Icon name="github" size={22} />
+          <strong>GitHub</strong>
+          <span>Explore my code</span>
+        </a>
+      </li>
+      <li>
+        <a href={`mailto:${profile.email}`}>
+          <Icon name="mail" size={22} class="mail-icon" />
+          <strong>Email</strong>
+          <span class="email">{profile.email}</span>
+        </a>
+      </li>
+    </ul>
+
+    <p class="script signoff" aria-hidden="true">
+      Let's build something<br />great together.
+      <svg viewBox="0 0 120 16" fill="none"><path d="M4 12C40 5 80 3 116 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+    </p>
+  </div>
+
+  <div class="container bottom">
+    <p>© {year} {profile.name}. All rights reserved.</p>
+    <p>
+      {profile.location} · <a href={x.href} target="_blank" rel="me noopener">X {x.handle}</a> ·
+      <a href="/about/">About</a> ·
+      <a href="#main">Back to top ↑</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--night);
+    color: var(--night-ink);
+    --accent: var(--night-accent);
+    --accent-strong: #79a7ff;
+    --accent-ink: var(--night);
+    --focus: #8ab4ff;
+  }
+  .top {
+    display: grid;
+    gap: var(--s-7);
+    padding-block: var(--s-7) var(--s-6);
+  }
+  @media (min-width: 1024px) {
+    .top {
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 0.8fr);
+      align-items: center;
+    }
+  }
+  .title {
+    font-size: 1.25rem;
+  }
+  .intro p {
+    margin-top: var(--s-2);
+    font-size: var(--text-sm);
+    color: var(--night-ink-2);
+    max-width: 30rem;
+  }
+  .intro .btn {
+    margin-top: var(--s-4);
+  }
+  .channels {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: start;
+    padding: 0;
+    list-style: none;
+  }
+  .channels li + li {
+    border-left: 1px solid var(--night-rule);
+  }
+  .channels a {
+    display: grid;
+    gap: var(--s-1);
+    padding: var(--s-2) var(--s-5);
+    text-decoration: none;
+    border-radius: var(--radius);
+    transition: background-color var(--dur-fast) var(--ease);
+  }
+  .channels a:hover {
+    background: rgb(255 255 255 / 0.05);
+  }
+  .channels :global(svg) {
+    margin-bottom: var(--s-2);
+  }
+  .channels :global(.mail-icon) {
+    color: var(--night-accent);
+  }
+  .channels strong {
+    font-size: var(--text-sm);
+    font-weight: 650;
+  }
+  .channels span {
+    font-size: var(--text-xs);
+    color: var(--night-ink-2);
+  }
+  .email {
+    white-space: nowrap;
+  }
+  .signoff {
+    font-size: clamp(1.15rem, 1rem + 0.5vw, 1.45rem);
+    line-height: 1.05;
+    transform: rotate(-6deg);
+    justify-self: center;
+  }
+  .signoff svg {
+    width: 5rem;
+    margin-top: var(--s-1);
+    margin-left: 1.75rem;
+    color: var(--night-ink-2);
+  }
+  .bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-3);
+    padding-block: var(--s-5);
+    border-top: 1px solid var(--night-rule);
+    font-size: var(--text-xs);
+    color: var(--night-ink-2);
+  }
+  .bottom a {
+    color: var(--night-ink-2);
+  }
+  .bottom a:hover {
+    color: var(--night-ink);
+  }
+  @media (max-width: 640px) {
+    .channels {
+      grid-template-columns: 1fr;
+    }
+    .channels li + li {
+      border-left: 0;
+      border-top: 1px solid var(--night-rule);
+    }
+    .channels a {
+      padding-inline: 0;
+      padding-block: var(--s-4);
+    }
+  }
+</style>

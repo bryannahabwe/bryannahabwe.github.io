@@ -1,0 +1,350 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Tag from "../../components/Tag.astro";
+import Flow from "../../components/Flow.astro";
+import { orderedProjects, type Project } from "../../data/projects";
+import { profile } from "../../data/profile";
+
+export function getStaticPaths() {
+  return orderedProjects.map((project, i) => ({
+    params: { slug: project.slug },
+    props: { project, next: orderedProjects[(i + 1) % orderedProjects.length] },
+  }));
+}
+
+interface Props {
+  project: Project;
+  next: Project;
+}
+const { project, next } = Astro.props;
+const url = new URL(`/work/${project.slug}/`, Astro.site).href;
+
+const toc = [
+  { id: "problem", label: "Problem" },
+  { id: "constraints", label: "Constraints" },
+  { id: "architecture", label: "Architecture" },
+  { id: "decisions", label: "Key decisions" },
+  { id: "implementation", label: "Implementation" },
+  { id: "outcomes", label: "Outcomes" },
+];
+
+const schema = [
+  {
+    "@type": "Article",
+    headline: project.title,
+    description: project.summary,
+    url,
+    author: { "@id": `${profile.site}/#person` },
+    keywords: project.stack.join(", "),
+  },
+  {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${profile.site}/` },
+      { "@type": "ListItem", position: 2, name: "Projects", item: `${profile.site}/work/` },
+      { "@type": "ListItem", position: 3, name: project.title, item: url },
+    ],
+  },
+];
+---
+
+<BaseLayout title={project.title} description={project.summary} type="article" schema={schema}>
+  <article class="case">
+    <header class="head-band">
+    <div class="container head">
+      <nav aria-label="Breadcrumb" class="crumbs">
+        <a href="/">Home</a> / <a href="/work/">Projects</a>
+      </nav>
+      <p class="cs-kicker">{project.kicker}</p>
+      <h1 class="display title">{project.title}</h1>
+      <p class="summary">{project.summary}</p>
+
+      <dl class="meta">
+        <div><dt class="eyebrow">Context</dt><dd>{project.context}</dd></div>
+        <div><dt class="eyebrow">Period</dt><dd>{project.period}</dd></div>
+        <div><dt class="eyebrow">My role</dt><dd>{project.role}</dd></div>
+        <div><dt class="eyebrow">Status</dt><dd>{project.status}</dd></div>
+      </dl>
+      <ul class="stack" role="list" aria-label="Technologies">
+        {project.stack.map((s) => <li><Tag>{s}</Tag></li>)}
+      </ul>
+    </div>
+    </header>
+
+    <div class="container layout">
+      <aside class="toc" aria-label="On this page">
+        <p class="eyebrow">On this page</p>
+        <ol role="list">
+          {toc.map((t) => <li><a href={`#${t.id}`}>{t.label}</a></li>)}
+        </ol>
+      </aside>
+
+      <div class="content">
+        <section id="problem" aria-labelledby="h-problem">
+          <h2 id="h-problem" class="h">Problem</h2>
+          <div class="prose">{project.problem.map((p) => <p>{p}</p>)}</div>
+        </section>
+
+        <section id="constraints" aria-labelledby="h-constraints">
+          <h2 id="h-constraints" class="h">Constraints</h2>
+          <ul class="constraints">{project.constraints.map((c) => <li>{c}</li>)}</ul>
+        </section>
+
+        <section id="architecture" aria-labelledby="h-architecture">
+          <h2 id="h-architecture" class="h">Architecture</h2>
+          <Flow title={project.flowTitle} steps={project.flow} />
+        </section>
+
+        <section id="decisions" aria-labelledby="h-decisions">
+          <h2 id="h-decisions" class="h">Key decisions</h2>
+          <ol class="decisions" role="list">
+            {project.decisions.map((d, i) => (
+              <li class="decision">
+                <p class="eyebrow">Decision {String(i + 1).padStart(2, "0")}</p>
+                <h3 class="d-title">{d.title}</h3>
+                <dl class="d-grid">
+                  <div><dt>Chose</dt><dd>{d.choice}</dd></div>
+                  <div><dt>Over</dt><dd>{d.alternatives}</dd></div>
+                  <div><dt>Because</dt><dd>{d.why}</dd></div>
+                </dl>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section id="implementation" aria-labelledby="h-implementation">
+          <h2 id="h-implementation" class="h">Implementation</h2>
+          <ul class="bullets">{project.implementation.map((i) => <li>{i}</li>)}</ul>
+        </section>
+
+        <section id="outcomes" aria-labelledby="h-outcomes">
+          <h2 id="h-outcomes" class="h">Outcomes</h2>
+          <ul class="outcomes" role="list">{project.outcomes.map((o) => <li>{o}</li>)}</ul>
+          <p class="note">
+            Outcomes are limited to what I can verify and share. Internal names, partners,
+            infrastructure details and production data are deliberately omitted.
+          </p>
+        </section>
+      </div>
+    </div>
+
+    <footer class="container next">
+      <a href={`/work/${next.slug}/`} class="next-link">
+        <span class="eyebrow">Next case study</span>
+        <span class="display next-title">{next.title} →</span>
+      </a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .head-band {
+    background: linear-gradient(160deg, var(--night) 0%, var(--night-2) 70%, #0b2552 100%);
+    color: var(--night-ink);
+    margin-bottom: var(--s-8);
+    --ink: var(--night-ink);
+    --ink-2: var(--night-ink-2);
+    --ink-3: var(--night-ink-2);
+    --rule: var(--night-rule);
+    --accent: var(--night-accent);
+    --paper: rgb(255 255 255 / 0.06);
+  }
+  .head {
+    padding-block: var(--s-7);
+  }
+  .crumbs {
+    font-size: var(--text-sm);
+    color: var(--night-ink-2);
+  }
+  .crumbs a {
+    color: var(--night-ink-2);
+  }
+  .crumbs a:hover {
+    color: var(--night-ink);
+  }
+  .cs-kicker {
+    margin-top: var(--s-6);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--night-accent);
+  }
+  .title {
+    margin-top: var(--s-4);
+    font-size: var(--text-hero);
+    max-width: 22ch;
+  }
+  .summary {
+    margin-top: var(--s-6);
+    max-width: 44rem;
+    font-size: var(--text-lg);
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    margin-top: var(--s-7);
+    border-top: 1px solid var(--rule);
+  }
+  .meta > div {
+    padding: var(--s-4) var(--s-4) var(--s-4) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .meta dd {
+    margin-top: var(--s-1);
+    font-size: var(--text-sm);
+  }
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin-top: var(--s-5);
+    padding: 0;
+    list-style: none;
+  }
+
+  .layout {
+    display: grid;
+    gap: var(--s-7);
+    padding-bottom: var(--section-y);
+  }
+  @media (min-width: 1024px) {
+    .layout {
+      grid-template-columns: 12rem minmax(0, 1fr);
+      gap: var(--s-9);
+    }
+  }
+  .toc {
+    display: none;
+  }
+  @media (min-width: 1024px) {
+    .toc {
+      display: block;
+      position: sticky;
+      top: 6rem;
+      align-self: start;
+    }
+  }
+  .toc ol {
+    margin-top: var(--s-3);
+    padding: 0;
+    list-style: none;
+    border-left: 1px solid var(--rule);
+  }
+  .toc a {
+    display: block;
+    padding: var(--s-1) var(--s-4);
+    margin-left: -1px;
+    border-left: 1px solid transparent;
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+  .toc a:hover {
+    color: var(--ink);
+    border-left-color: var(--accent);
+  }
+
+  .content > section {
+    padding-top: var(--s-7);
+    border-top: 1px solid var(--rule);
+    margin-bottom: var(--s-8);
+    max-width: 50rem;
+  }
+  .h {
+    font-size: var(--text-xl);
+    margin-bottom: var(--s-5);
+  }
+  .constraints,
+  .bullets {
+    display: grid;
+    gap: var(--s-3);
+    padding-left: 1.1em;
+    color: var(--ink-2);
+  }
+  .constraints li::marker,
+  .bullets li::marker {
+    color: var(--accent);
+  }
+
+  .decisions {
+    display: grid;
+    gap: var(--s-5);
+    padding: 0;
+    list-style: none;
+  }
+  .decision {
+    padding: var(--s-6);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+  }
+  .d-title {
+    margin-top: var(--s-2);
+    font-size: var(--text-md);
+    font-weight: 580;
+    letter-spacing: -0.01em;
+  }
+  .d-grid {
+    display: grid;
+    gap: var(--s-3);
+    margin-top: var(--s-4);
+  }
+  .d-grid > div {
+    display: grid;
+    gap: var(--s-1);
+  }
+  @media (min-width: 640px) {
+    .d-grid > div {
+      grid-template-columns: 6rem 1fr;
+      gap: var(--s-4);
+    }
+  }
+  .d-grid dt {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding-top: 0.25em;
+  }
+  .d-grid dd {
+    color: var(--ink-2);
+  }
+
+  .outcomes {
+    display: grid;
+    gap: var(--s-3);
+    padding: 0;
+    list-style: none;
+  }
+  .outcomes li {
+    padding: var(--s-4) var(--s-5);
+    border-left: 2px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .note {
+    margin-top: var(--s-5);
+    font-size: var(--text-sm);
+    color: var(--ink-3);
+  }
+
+  .next {
+    padding-bottom: var(--section-y);
+  }
+  .next-link {
+    display: grid;
+    gap: var(--s-3);
+    padding-top: var(--s-6);
+    border-top: 1px solid var(--ink);
+    text-decoration: none;
+  }
+  .next-title {
+    font-size: var(--text-2xl);
+    transition: color var(--dur-fast) var(--ease);
+  }
+  .next-link:hover .next-title {
+    color: var(--accent);
+  }
+</style>

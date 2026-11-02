@@ -1,0 +1,125 @@
+---
+import "../styles/global.css";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { profile, socials } from "../data/profile";
+import portrait from "../assets/portrait.jpg";
+import { getImage } from "astro:assets";
+import bodyLatin from "@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url";
+import manropeLatin from "@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url";
+
+interface Props {
+  title?: string;
+  description?: string;
+  type?: "website" | "article" | "profile";
+  /** Extra JSON-LD nodes merged into the page graph. */
+  schema?: Record<string, unknown>[];
+}
+
+const {
+  title,
+  description = profile.summary,
+  type = "website",
+  schema = [],
+} = Astro.props;
+
+const fullTitle = title ? `${title} — ${profile.name}` : `${profile.name} — ${profile.role}, ${profile.focus}`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = await getImage({ src: portrait, width: 600, format: "jpg" });
+const ogImageUrl = new URL(ogImage.src, Astro.site).href;
+
+const person = {
+  "@type": "Person",
+  "@id": `${profile.site}/#person`,
+  name: profile.name,
+  jobTitle: profile.role,
+  description: profile.summary,
+  url: `${profile.site}/`,
+  image: ogImageUrl,
+  email: `mailto:${profile.email}`,
+  address: { "@type": "PostalAddress", addressLocality: "Kampala", addressCountry: "UG" },
+  worksFor: { "@type": "Organization", name: profile.employer.name, url: profile.employer.url },
+  alumniOf: { "@type": "CollegeOrUniversity", name: "Makerere University" },
+  knowsAbout: [
+    "Backend engineering", "Java", "Spring Boot", "Groovy", "Grails", "Python", "Apache Kafka",
+    "Distributed systems", "Fintech", "Mobile money", "PostgreSQL", "MySQL", "Multi-tenant SaaS",
+    "Application security", "Docker", "Kubernetes", "React",
+  ],
+  knowsLanguage: profile.languages,
+  sameAs: socials.map((s) => s.href),
+};
+
+const graph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    person,
+    {
+      "@type": "WebSite",
+      "@id": `${profile.site}/#website`,
+      url: `${profile.site}/`,
+      name: profile.name,
+      author: { "@id": `${profile.site}/#person` },
+      inLanguage: "en",
+    },
+    ...schema,
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={profile.name} />
+    <link rel="canonical" href={canonical} />
+    <link rel="preload" href={bodyLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={manropeLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#071226" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#071226" media="(prefers-color-scheme: dark)" />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={profile.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content={`Portrait of ${profile.name}`} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@nahabwebryn" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(graph)} />
+
+    <!-- Theme + JS flags before paint, so there is no flash of the wrong theme. -->
+    <script is:inline>
+      (function () {
+        var d = document.documentElement;
+        d.classList.add("js");
+        try {
+          var t = localStorage.getItem("theme");
+          if (t === "light" || t === "dark") d.dataset.theme = t;
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <SiteHeader />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter />
+
+    <script>
+      import "../scripts/site";
+    </script>
+  </body>
+</html>

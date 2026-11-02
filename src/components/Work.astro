@@ -1,0 +1,199 @@
+---
+import Icon from "./Icon.astro";
+import ProjectArt from "./ProjectArt.astro";
+
+const featured = [
+  {
+    slug: "core-platform-hardening",
+    art: "investing",
+    category: "Fintech",
+    title: "Investment Management Platform",
+    summary: "The core platform behind a digital fund manager — secured withdrawals, event-driven integration and identity migration.",
+    tags: ["Groovy/Grails", "MySQL", "Kafka", "Keycloak"],
+  },
+  {
+    slug: "mobile-money-gateway",
+    art: "mobile-money",
+    category: "Payments",
+    title: "Mobile Money Integrations",
+    summary: "MTN MoMo and Airtel Money for deposits and withdrawals — now carrying 90%+ of client deposits.",
+    tags: ["Java", "Spring Boot", "Kafka", "Redis"],
+  },
+  {
+    slug: "moozo-school-platform",
+    art: "school",
+    category: "EdTech · SaaS",
+    title: "School Management System",
+    summary: "A multi-tenant platform where every school gets its own isolated schema, with offline-first records.",
+    tags: ["Spring Boot", "PostgreSQL", "Multi-tenant"],
+  },
+] as const;
+---
+
+<section id="projects" class="section" aria-labelledby="projects-title">
+  <div class="container">
+    <div class="head">
+      <div>
+        <h2 id="projects-title" class="kicker">Selected Projects</h2>
+        <p class="sub">Real-world systems, written up as engineering case studies.</p>
+      </div>
+      <a class="all" href="/work/">View all projects <Icon name="arrow" size={14} /></a>
+    </div>
+
+    <ul class="grid" role="list">
+      {featured.map((p, i) => (
+        <li class="card project" data-reveal style={`transition-delay: ${i * 70}ms`}>
+          <div class="media"><ProjectArt variant={p.art} /></div>
+          <div class="body">
+            <p class="category">{p.category}</p>
+            <h3><a class="stretched" href={`/work/${p.slug}/`}>{p.title}</a></h3>
+            <p>{p.summary}</p>
+            <div class="foot">
+              <ul class="tags" role="list" aria-label="Technologies">
+                {p.tags.map((t) => <li>{t}</li>)}
+              </ul>
+              <span class="go" aria-hidden="true"><Icon name="arrow" size={16} /></span>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: var(--section-y);
+  }
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: end;
+    gap: var(--s-4);
+  }
+  .sub {
+    margin-top: var(--s-2);
+    color: var(--ink-2);
+    font-size: var(--text-sm);
+  }
+  .all {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .all:hover {
+    text-decoration: underline;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: var(--s-5);
+    margin-top: var(--s-6);
+    padding: 0;
+    list-style: none;
+  }
+  .project {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .project:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--rule));
+  }
+  .media {
+    aspect-ratio: 8 / 3;
+    overflow: hidden;
+  }
+  .media :global(svg) {
+    transition: transform var(--dur-slow) var(--ease);
+  }
+  .project:hover .media :global(svg) {
+    transform: scale(1.04);
+  }
+  .body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: var(--s-5);
+  }
+  .body .category {
+    flex: none;
+    margin-top: 0;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  h3 {
+    margin-top: var(--s-1);
+    font-size: var(--text-md);
+  }
+  .stretched {
+    text-decoration: none;
+  }
+  .stretched::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .stretched:focus-visible {
+    outline: none;
+  }
+  .project:has(.stretched:focus-visible) {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+  .body p {
+    margin-top: var(--s-2);
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+    flex: 1;
+  }
+  .foot {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--s-3);
+    margin-top: var(--s-5);
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    padding: 0;
+    list-style: none;
+  }
+  .tags li {
+    padding: 0.15rem 0.55rem;
+    border-radius: var(--radius-sm);
+    background: var(--surface-sunk);
+    border: 1px solid var(--rule);
+    font-size: var(--text-xs);
+    color: var(--ink-2);
+  }
+  .go {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    color: var(--accent);
+    transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  }
+  .project:hover .go {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+</style>

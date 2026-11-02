@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import About from "../components/About.astro";
+import Expertise from "../components/Expertise.astro";
+import Experience from "../components/Experience.astro";
+import Work from "../components/Work.astro";
+import HowIBuild from "../components/HowIBuild.astro";
+import ApproachInsights from "../components/ApproachInsights.astro";
+---
+
+<BaseLayout>
+  <Hero />
+  <About />
+  <section class="split" aria-label="Skills and experience">
+    <div class="container grid">
+      <Expertise />
+      <Experience />
+    </div>
+  </section>
+  <Work />
+  <HowIBuild />
+  <ApproachInsights />
+</BaseLayout>
+
+<style>
+  .split {
+    padding-block: var(--s-4) var(--s-6);
+  }
+  .grid {
+    display: grid;
+    gap: var(--s-7);
+  }
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: var(--s-7);
+    }
+    .grid > :global(#experience) {
+      padding-left: var(--s-7);
+      border-left: 1px solid var(--rule);
+    }
+  }
+</style>

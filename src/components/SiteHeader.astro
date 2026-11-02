@@ -1,0 +1,217 @@
+---
+import { nav, profile } from "../data/profile";
+import ThemeToggle from "./ThemeToggle.astro";
+import Icon from "./Icon.astro";
+---
+
+<header class="site-header">
+  <div class="container bar">
+    <a class="brand" href="/" aria-label={`${profile.name} — home`}>
+      <span class="mark" aria-hidden="true">NB</span>
+      <span class="brand-name">{profile.name}</span>
+    </a>
+
+    <nav aria-label="Primary">
+      <div class="menu" id="site-menu" data-open="false">
+        <ul role="list">
+          {nav.map((item) => (
+            <li><a href={item.href} data-nav-link>{item.label}</a></li>
+          ))}
+        </ul>
+        <a class="btn btn-primary menu-cta" href="/#contact">Let's Talk <Icon name="arrow" size={16} /></a>
+      </div>
+    </nav>
+
+    <div class="actions">
+      <ThemeToggle />
+      <a class="btn btn-primary btn-sm talk" href="/#contact">Let's Talk <Icon name="arrow" size={14} /></a>
+      <button class="menu-btn" type="button" aria-controls="site-menu" aria-expanded="false" data-menu-toggle>
+        <span class="sr-only">Menu</span>
+        <span class="bars" aria-hidden="true"><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--night) 92%, transparent);
+    backdrop-filter: saturate(140%) blur(12px);
+    -webkit-backdrop-filter: saturate(140%) blur(12px);
+    border-bottom: 1px solid transparent;
+    color: var(--night-ink);
+    transition: border-color var(--dur) var(--ease);
+    /* Buttons inside the always-dark header use the dark-surface accent. */
+    --accent: var(--night-accent);
+    --accent-strong: #79a7ff;
+    --accent-ink: var(--night);
+    --focus: #8ab4ff;
+  }
+  .site-header[data-scrolled] {
+    border-bottom-color: var(--night-rule);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: var(--s-5);
+    height: 4.25rem;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+    text-decoration: none;
+    margin-right: auto;
+  }
+  .mark {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 900;
+    letter-spacing: -0.06em;
+    color: var(--night-accent);
+    line-height: 1;
+  }
+  .brand-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-base);
+    letter-spacing: -0.01em;
+  }
+  ul {
+    display: flex;
+    gap: var(--s-1);
+    padding: 0;
+    list-style: none;
+  }
+  .menu a[data-nav-link] {
+    position: relative;
+    display: inline-block;
+    padding: var(--s-2) var(--s-3);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--night-ink-2);
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease);
+  }
+  .menu a[data-nav-link]:hover,
+  .menu a[aria-current] {
+    color: var(--night-ink);
+  }
+  .menu a[aria-current] {
+    color: var(--night-accent);
+  }
+  .menu a[aria-current]::after {
+    content: "";
+    position: absolute;
+    left: var(--s-3);
+    right: var(--s-3);
+    bottom: -2px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--night-accent);
+  }
+  .menu-cta {
+    display: none;
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+  .menu-btn {
+    display: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+  }
+  .bars {
+    display: grid;
+    gap: 6px;
+    width: 18px;
+    margin: auto;
+  }
+  .bars span {
+    display: block;
+    height: 1.5px;
+    background: var(--night-ink);
+    transition: transform var(--dur) var(--ease);
+  }
+  [aria-expanded="true"] .bars span:first-child {
+    transform: translateY(3.75px) rotate(45deg);
+  }
+  [aria-expanded="true"] .bars span:last-child {
+    transform: translateY(-3.75px) rotate(-45deg);
+  }
+
+  @media (max-width: 1023px) {
+    .bar {
+      flex-wrap: wrap;
+    }
+    nav {
+      order: 3;
+      width: 100%;
+    }
+    /* Without JS the nav stays visible as a scrollable row. */
+    ul {
+      overflow-x: auto;
+      padding-bottom: var(--s-2);
+    }
+    :global(.js) .menu-btn {
+      display: block;
+    }
+    :global(.js) .talk {
+      display: none;
+    }
+    :global(.js) nav {
+      width: auto;
+      order: 0;
+    }
+    :global(.js) .menu {
+      /* The header's backdrop-filter makes it this panel's containing block,
+         so size it explicitly against the viewport rather than with inset. */
+      position: fixed;
+      top: 4.25rem;
+      left: 0;
+      right: 0;
+      height: calc(100dvh - 4.25rem);
+      overflow-y: auto;
+      background: var(--night);
+      padding: var(--s-5) var(--gutter) var(--s-7);
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity var(--dur) var(--ease), visibility 0s linear var(--dur);
+    }
+    :global(.js) .menu[data-open="true"] {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity var(--dur) var(--ease);
+    }
+    :global(.js) ul {
+      flex-direction: column;
+      gap: 0;
+      overflow: visible;
+    }
+    :global(.js) .menu a[data-nav-link] {
+      display: block;
+      padding: var(--s-4) 0;
+      font-size: var(--text-xl);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--night-ink);
+      border-bottom: 1px solid var(--night-rule);
+    }
+    :global(.js) .menu a[aria-current]::after {
+      display: none;
+    }
+    :global(.js) .menu-cta {
+      display: inline-flex;
+      margin-top: var(--s-6);
+    }
+  }
+</style>
