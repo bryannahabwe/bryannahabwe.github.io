@@ -4,9 +4,9 @@
  */
 export const profile = {
   name: "Nahabwe Brian",
-  role: "Software Engineer",
+  role: "Senior Backend Engineer",
   currentTitle: "Software Engineer",
-  focus: "Backend engineering, distributed systems & fintech infrastructure",
+  focus: "Java, Spring Boot, Payments, and Financial Systems",
   location: "Kampala, Uganda",
   since: 2017,
   yearsLabel: "8+ years",
@@ -15,8 +15,13 @@ export const profile = {
   site: "https://bryannahabwe.github.io",
   /** Google Search Console "HTML tag" verification code (the content="…" value). Empty = no tag. */
   googleSiteVerification: "",
+  /**
+   * Canonical one-line bio. Keep identical to the GitHub and LinkedIn bios so
+   * search engines can match the profiles to the same person.
+   */
+  bio: "Senior Backend Engineer specializing in Java, Spring Boot, Payments, and Financial Systems based in Kampala, Uganda.",
   summary:
-    "Software engineer in Kampala with 8+ years building financial systems — mobile-money payments, investment and savings platforms, and multi-tenant SaaS — in Java, Spring Boot, Groovy/Grails and Kafka.",
+    "Senior Backend Engineer specializing in Java, Spring Boot, Payments, and Financial Systems based in Kampala, Uganda. 8+ years building mobile-money integrations, investment and savings platforms, and multi-tenant SaaS.",
   languages: ["English", "Runyankole", "Luganda"],
 } as const;
 

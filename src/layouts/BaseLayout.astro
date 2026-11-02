@@ -23,7 +23,7 @@ const {
   schema = [],
 } = Astro.props;
 
-const fullTitle = title ? `${title} — ${profile.name}` : `${profile.name} — ${profile.role}, ${profile.focus}`;
+const fullTitle = title ? `${title} — ${profile.name}` : `${profile.name} — ${profile.role} | Java, Spring Boot & Payments`;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = await getImage({ src: portrait, width: 600, format: "jpg" });
 const ogImageUrl = new URL(ogImage.src, Astro.site).href;

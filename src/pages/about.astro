@@ -6,7 +6,7 @@ import { profile, socials, education, credentials } from "../data/profile";
 import { experience } from "../data/experience";
 
 const description =
-  "Nahabwe Brian is a software engineer in Kampala, Uganda, with 8+ years building financial systems: mobile-money payments, investment and savings platforms, and multi-tenant SaaS in Java, Spring Boot, Groovy/Grails and Kafka.";
+  "Nahabwe Brian is a Senior Backend Engineer specializing in Java, Spring Boot, Payments, and Financial Systems based in Kampala, Uganda, with 8+ years building mobile-money integrations, investment and savings platforms, and multi-tenant SaaS.";
 
 const schema = [
   {
@@ -26,7 +26,7 @@ const schema = [
     <header class="head">
       <p class="eyebrow">About</p>
       <h1 class="display title">{profile.name}</h1>
-      <p class="role">{profile.role} — {profile.focus}. {profile.location}.</p>
+      <p class="role">{profile.bio}</p>
     </header>
 
     <div class="grid">
@@ -36,8 +36,9 @@ const schema = [
 
       <div class="prose">
         <p>
-          <strong>Nahabwe Brian</strong> is a backend engineer with 8+ years building financial
-          systems in Uganda — payments, investment and savings platforms. He is currently a Software
+          <strong>Nahabwe Brian</strong> is a Senior Backend Engineer specializing in Java, Spring Boot,
+          Payments, and Financial Systems based in Kampala, Uganda, with 8+ years building payment,
+          investment and savings platforms. He is currently a Software
           Engineer at <a class="link" href={profile.employer.url} target="_blank" rel="noopener">XENO Investment</a>,
           a digital fund manager, where he built the MTN and Airtel mobile-money integrations that now
           carry more than 90% of client deposits, and the USSD channel that lets clients on basic phones

@@ -1,5 +1,6 @@
 ---
 import Icon from "./Icon.astro";
+import { profile } from "../data/profile";
 
 const pillars = [
   {
@@ -24,11 +25,10 @@ const pillars = [
   <div class="container grid">
     <div class="intro" data-reveal>
       <p class="kicker">About Me</p>
-      <h2 id="about-title" class="title">A software engineer focused on building systems that matter.</h2>
+      <h2 id="about-title" class="title">A backend engineer focused on building systems that matter.</h2>
       <p class="body">
-        I'm <strong>Nahabwe Brian</strong>, a backend engineer in Kampala with extensive experience in
-        Java, Spring Boot, Groovy/Grails and Python. I design systems that move money reliably,
-        work with great teams, and solve complex problems in fintech and beyond.
+        I'm <strong>{profile.name}</strong>, a {profile.bio} I design systems that move money
+        reliably, work with great teams, and solve complex problems in fintech and beyond.
       </p>
       <a class="btn btn-outline btn-sm" href="/about/">Learn more about me <Icon name="arrow" size={14} /></a>
     </div>
