@@ -13,6 +13,8 @@ export const profile = {
   employer: { name: "XENO Investment", url: "https://myxeno.com/" },
   email: "nahabwebrian24@gmail.com",
   site: "https://bryannahabwe.github.io",
+  /** Google Search Console "HTML tag" verification code (the content="…" value). Empty = no tag. */
+  googleSiteVerification: "",
   summary:
     "Software engineer in Kampala with 8+ years building financial systems — mobile-money payments, investment and savings platforms, and multi-tenant SaaS — in Java, Spring Boot, Groovy/Grails and Kafka.",
   languages: ["English", "Runyankole", "Luganda"],

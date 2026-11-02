@@ -67,7 +67,8 @@ export const writing: { title: string; summary: string; status: "draft" | "publi
     title: "A Keycloak-style provider SPI for multi-tenant notifications",
     summary:
       "Using Provider / ProviderFactory and ServiceLoader so SMS, email, push and WhatsApp adapters can be dropped in as JARs without touching the core engine.",
-    status: "draft",
+    status: "published",
+    href: "/insights/keycloak-style-provider-spi/",
     topic: "Architecture",
   },
   {

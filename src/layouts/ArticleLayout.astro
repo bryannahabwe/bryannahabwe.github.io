@@ -1,0 +1,165 @@
+---
+/** Layout for long-form Insights articles written in Markdown. */
+import BaseLayout from "./BaseLayout.astro";
+import { profile } from "../data/profile";
+
+interface Props {
+  frontmatter: {
+    title: string;
+    description: string;
+    published: string;
+    topic: string;
+    readingTime: string;
+  };
+  url: string;
+}
+
+const { frontmatter, url } = Astro.props;
+const canonical = new URL(url, Astro.site).href;
+const date = new Date(frontmatter.published);
+const pretty = date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+
+const schema = [
+  {
+    "@type": "TechArticle",
+    headline: frontmatter.title,
+    description: frontmatter.description,
+    url: canonical,
+    datePublished: frontmatter.published,
+    author: { "@id": `${profile.site}/#person` },
+    publisher: { "@id": `${profile.site}/#person` },
+  },
+];
+---
+
+<BaseLayout title={frontmatter.title} description={frontmatter.description} type="article" schema={schema}>
+  <article>
+    <header class="head-band">
+      <div class="container head">
+        <p class="crumbs"><a href="/">Home</a> / <a href="/#insights">Insights</a></p>
+        <p class="topic">{frontmatter.topic}</p>
+        <h1 class="display title">{frontmatter.title}</h1>
+        <p class="lede">{frontmatter.description}</p>
+        <p class="meta">
+          <span>{profile.name}</span> · <time datetime={frontmatter.published}>{pretty}</time> · <span>{frontmatter.readingTime}</span>
+        </p>
+      </div>
+    </header>
+
+    <div class="container body">
+      <div class="article">
+        <slot />
+      </div>
+      <footer class="end">
+        <a class="btn btn-outline btn-sm" href="/work/notification-platform/">Related case study: multi-tenant notifications →</a>
+      </footer>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .head-band {
+    background: linear-gradient(160deg, var(--night) 0%, var(--night-2) 70%, #0b2552 100%);
+    color: var(--night-ink);
+  }
+  .head {
+    padding-block: var(--s-7);
+    max-width: calc(48rem + var(--gutter) * 2);
+  }
+  .crumbs,
+  .crumbs a {
+    font-size: var(--text-sm);
+    color: var(--night-ink-2);
+  }
+  .topic {
+    margin-top: var(--s-5);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--night-accent);
+  }
+  .title {
+    margin-top: var(--s-3);
+    font-size: clamp(1.9rem, 1.4rem + 2vw, 2.8rem);
+  }
+  .lede {
+    margin-top: var(--s-4);
+    font-size: var(--text-md);
+    color: var(--night-ink-2);
+  }
+  .meta {
+    margin-top: var(--s-5);
+    font-size: var(--text-sm);
+    color: var(--night-ink-2);
+  }
+  .body {
+    max-width: calc(48rem + var(--gutter) * 2);
+    padding-block: var(--s-7) var(--section-y);
+  }
+  .end {
+    margin-top: var(--s-7);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--rule);
+  }
+
+  /* Rendered Markdown */
+  .article {
+    color: var(--ink-2);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+  .article :global(> * + *) {
+    margin-top: var(--s-4);
+  }
+  .article :global(h2) {
+    margin-top: var(--s-7);
+    font-size: var(--text-xl);
+    color: var(--ink);
+  }
+  .article :global(h3) {
+    margin-top: var(--s-6);
+    font-size: var(--text-lg);
+    color: var(--ink);
+  }
+  .article :global(strong) {
+    color: var(--ink);
+  }
+  .article :global(a) {
+    color: var(--accent);
+  }
+  .article :global(ul),
+  .article :global(ol) {
+    padding-left: 1.25em;
+  }
+  .article :global(li + li) {
+    margin-top: var(--s-2);
+  }
+  .article :global(li::marker) {
+    color: var(--accent);
+  }
+  .article :global(:not(pre) > code) {
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    background: var(--surface-sunk);
+    border: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    color: var(--ink);
+  }
+  .article :global(pre) {
+    padding: var(--s-4) var(--s-5);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+  .article :global(blockquote) {
+    padding: var(--s-3) var(--s-5);
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    color: var(--ink);
+  }
+</style>

@@ -74,6 +74,7 @@ const graph = {
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="author" content={profile.name} />
+    {profile.googleSiteVerification && <meta name="google-site-verification" content={profile.googleSiteVerification} />}
     <link rel="canonical" href={canonical} />
     <link rel="preload" href={bodyLatin} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={manropeLatin} as="font" type="font/woff2" crossorigin />

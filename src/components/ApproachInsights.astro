@@ -38,7 +38,11 @@ const latest = writing[0];
         <div class="meta">
           <h3>{latest.href ? <a href={latest.href}>{latest.title}</a> : latest.title}</h3>
           <p>{latest.summary}</p>
-          <span class="badge">{latest.status === "draft" ? "In draft — publishing soon" : "Published"}</span>
+          {latest.href ? (
+            <a class="badge read" href={latest.href}>Read the article →</a>
+          ) : (
+            <span class="badge">In draft — publishing soon</span>
+          )}
         </div>
       </article>
     </div>
@@ -132,6 +136,19 @@ const latest = writing[0];
   }
   .meta {
     padding: var(--s-5);
+  }
+  .badge.read {
+    text-decoration: none;
+  }
+  .badge.read:hover {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  .meta h3 a {
+    text-decoration: none;
+  }
+  .meta h3 a:hover {
+    color: var(--accent);
   }
   .meta h3 {
     font-size: var(--text-md);
