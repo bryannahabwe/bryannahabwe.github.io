@@ -1,0 +1,89 @@
+---
+/**
+ * Architecture flow: an ordered sequence of components rendered as a
+ * diagram. Semantically an ordered list, so it reads correctly to screen
+ * readers and degrades to a numbered list without CSS.
+ */
+import type { FlowStep } from "../data/projects";
+
+interface Props {
+  title: string;
+  steps: FlowStep[];
+}
+const { title, steps } = Astro.props;
+---
+
+<figure class="flow">
+  <figcaption class="eyebrow">{title}</figcaption>
+  <ol class="steps" role="list">
+    {steps.map((s, i) => (
+      <li class="step">
+        <span class="n mono" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+        <strong class="label">{s.label}</strong>
+        <span class="detail">{s.detail}</span>
+      </li>
+    ))}
+  </ol>
+</figure>
+
+<style>
+  .flow {
+    padding: var(--s-6);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(circle at 1px 1px, var(--rule) 1px, transparent 0) 0 0 / 18px 18px,
+      var(--surface);
+  }
+  .steps {
+    display: grid;
+    gap: var(--s-5);
+    margin-top: var(--s-5);
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+  .step {
+    position: relative;
+    display: grid;
+    gap: var(--s-1);
+    padding: var(--s-4);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    background: var(--paper);
+  }
+  /* Vertical connector between consecutive steps. */
+  .step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: calc(var(--s-5) * -1);
+    width: 1px;
+    height: var(--s-5);
+    background: var(--accent);
+  }
+  .n {
+    color: var(--accent);
+    font-size: var(--text-xs);
+  }
+  .label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+  .detail {
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+
+  @media (min-width: 640px) {
+    .step {
+      grid-template-columns: 2rem 12rem minmax(0, 1fr);
+      align-items: baseline;
+      gap: var(--s-4);
+    }
+    .step:not(:last-child)::after {
+      left: calc(var(--s-4) + 0.55rem);
+    }
+  }
+</style>

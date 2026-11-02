@@ -1,0 +1,181 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import portrait from "../assets/portrait.jpg";
+import { profile, socials, education, credentials } from "../data/profile";
+import { experience } from "../data/experience";
+
+const description =
+  "Nahabwe Brian is a software engineer in Kampala, Uganda, with 8+ years building financial systems: mobile-money payments, investment and savings platforms, and multi-tenant SaaS in Java, Spring Boot, Groovy/Grails and Kafka.";
+
+const schema = [
+  {
+    "@type": "ProfilePage",
+    "@id": `${profile.site}/about/#page`,
+    url: `${profile.site}/about/`,
+    name: `About ${profile.name}`,
+    description,
+    mainEntity: { "@id": `${profile.site}/#person` },
+    dateModified: new Date().toISOString().slice(0, 10),
+  },
+];
+---
+
+<BaseLayout title="About" description={description} type="profile" schema={schema}>
+  <article class="container bio">
+    <header class="head">
+      <p class="eyebrow">About</p>
+      <h1 class="display title">{profile.name}</h1>
+      <p class="role">{profile.role} — {profile.focus}. {profile.location}.</p>
+    </header>
+
+    <div class="grid">
+      <figure class="portrait">
+        <Image src={portrait} alt={`Portrait of ${profile.name}`} widths={[320, 480, 576]} sizes="(min-width: 960px) 260px, 80vw" loading="eager" />
+      </figure>
+
+      <div class="prose">
+        <p>
+          <strong>Nahabwe Brian</strong> is a backend engineer with 8+ years building financial
+          systems in Uganda — payments, investment and savings platforms. He is currently a Software
+          Engineer at <a class="link" href={profile.employer.url} target="_blank" rel="noopener">XENO Investment</a>,
+          a digital fund manager, where he built the MTN and Airtel mobile-money integrations that now
+          carry more than 90% of client deposits, and the USSD channel that lets clients on basic phones
+          invest.
+        </p>
+        <p>
+          Before XENO he spent nearly five years at OMNI-Tech building data-collection, workflow and
+          reporting systems for NGOs and development partners. Alongside his full-time role he has
+          built payment services connecting banks and mobile networks for Rexial, delivered the
+          events platform for the African Union's AU INNOFEST '26 as sole developer, and co-founded
+          Moozo, a multi-tenant school management platform.
+        </p>
+        <p>
+          His work centres on the design calls behind features: how a system is split up, how tenants
+          are kept apart, how services communicate, where it runs and how it is observed. He works
+          mainly in Java, Spring Boot, Groovy/Grails, Python and Kafka, with PostgreSQL, MySQL and
+          Redis, on Docker, Kubernetes, GCP and AWS, and secures systems with Keycloak, OAuth2 and RBAC.
+        </p>
+        <p>
+          He holds a BSc in Software Engineering from Makerere University and completed the McKinsey
+          Forward Programme. He speaks English, Runyankole and Luganda.
+        </p>
+      </div>
+    </div>
+
+    <section class="block" aria-labelledby="career">
+      <h2 id="career" class="eyebrow">Career</h2>
+      <ol role="list" class="timeline">
+        {experience.map((r) => (
+          <li>
+            <span class="when">{r.period}</span>
+            <span><strong>{r.title}</strong>, {r.company}{r.kind && <span class="muted"> · {r.kind}</span>}</span>
+          </li>
+        ))}
+        {education.map((e) => (
+          <li>
+            <span class="when">{e.period}</span>
+            <span><strong>{e.title}</strong>, {e.org}</span>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="block" aria-labelledby="elsewhere">
+      <h2 id="elsewhere" class="eyebrow">Elsewhere</h2>
+      <ul role="list" class="links">
+        {socials.map((s) => (
+          <li><a class="link" href={s.href} target="_blank" rel="me noopener">{s.label} — {s.handle}</a></li>
+        ))}
+        <li><a class="link" href={`mailto:${profile.email}`}>Email — {profile.email}</a></li>
+      </ul>
+      <p class="muted cta">
+        See the <a class="link" href="/work/">engineering case studies</a> or the
+        {" "}<a class="link" href="/#approach">principles behind them</a>.
+      </p>
+    </section>
+
+    <section class="block" aria-labelledby="creds">
+      <h2 id="creds" class="eyebrow">Programmes & certificates</h2>
+      <ul role="list" class="links">
+        {credentials.map((c) => (
+          <li>{"href" in c ? <a class="link" href={c.href} target="_blank" rel="noopener">{c.title}</a> : c.title} <span class="muted">— {c.org}, {c.period}</span></li>
+        ))}
+      </ul>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .bio {
+    padding-block: var(--s-7) var(--section-y);
+  }
+  .title {
+    margin-top: var(--s-3);
+    font-size: clamp(2rem, 1.5rem + 2vw, 2.9rem);
+  }
+  .role {
+    margin-top: var(--s-3);
+    font-size: var(--text-md);
+    color: var(--ink-2);
+  }
+  .grid {
+    display: grid;
+    gap: var(--s-6);
+    margin-top: var(--s-7);
+  }
+  @media (min-width: 960px) {
+    .grid {
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: var(--s-8);
+    }
+  }
+  .portrait {
+    max-width: 260px;
+  }
+  .grid .prose {
+    font-size: var(--text-base);
+  }
+  .portrait :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 20%;
+    border-radius: var(--radius);
+  }
+  .block {
+    margin-top: var(--s-7);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--rule-strong);
+    max-width: 50rem;
+  }
+  .timeline,
+  .links {
+    display: grid;
+    gap: var(--s-3);
+    margin-top: var(--s-5);
+    padding: 0;
+    list-style: none;
+  }
+  .timeline li {
+    display: grid;
+    gap: var(--s-1);
+  }
+  @media (min-width: 640px) {
+    .timeline li {
+      grid-template-columns: 11rem 1fr;
+      gap: var(--s-4);
+    }
+  }
+  .when {
+    color: var(--ink-3);
+    font-size: var(--text-sm);
+    padding-top: 0.15em;
+  }
+  .timeline strong {
+    font-weight: 560;
+  }
+  .cta {
+    margin-top: var(--s-5);
+  }
+</style>

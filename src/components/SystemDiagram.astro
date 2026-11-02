@@ -1,0 +1,112 @@
+---
+/**
+ * Illustrative payment flow of the kind I build. A request travels
+ * customer → gateway → payments → provider; the callback returns through
+ * Kafka to the ledger. Pulses are SMIL animations, hidden under
+ * prefers-reduced-motion.
+ */
+const nodes = [
+  { x: 8, y: 40, title: "Customer", sub: "app · USSD" },
+  { x: 152, y: 40, title: "API gateway", sub: "OAuth2 · limits" },
+  { x: 296, y: 40, title: "Payments", sub: "Spring Boot" },
+  { x: 296, y: 158, title: "MTN · Airtel", sub: "Open API" },
+  { x: 152, y: 158, title: "Kafka", sub: "events · outbox" },
+  { x: 8, y: 158, title: "Ledger", sub: "PostgreSQL" },
+  { x: 152, y: 276, title: "Observability", sub: "Grafana · alerts" },
+];
+const flow = "M64 62 H352 V180 H64";
+const steps = [
+  { x: 136, y: 54, n: "01" },
+  { x: 280, y: 54, n: "02" },
+  { x: 366, y: 125, n: "03" },
+  { x: 280, y: 172, n: "04" },
+  { x: 136, y: 172, n: "05" },
+];
+---
+
+<svg class="diagram" viewBox="0 0 416 330" role="img" aria-labelledby="diagram-title diagram-desc">
+  <title id="diagram-title">Illustrative payment flow</title>
+  <desc id="diagram-desc">
+    A customer request passes through an API gateway to a payments service and on to the MTN or
+    Airtel mobile-money API. The provider's callback is published to Kafka through an outbox and
+    settled in a PostgreSQL ledger, with every step observed in Grafana.
+  </desc>
+
+  <path class="wire" d={flow} />
+  <path class="wire dashed" d="M208 202 V276" />
+  <path class="wire dashed" d="M340 84 C340 128 236 112 236 158" />
+
+  <g class="pulses" aria-hidden="true">
+    <circle r="4.5" class="pulse">
+      <animateMotion dur="5.5s" repeatCount="indefinite" path={flow} />
+    </circle>
+    <circle r="4.5" class="pulse alt">
+      <animateMotion dur="5.5s" begin="-2.75s" repeatCount="indefinite" path={flow} />
+    </circle>
+    <circle r="3" class="pulse soft">
+      <animateMotion dur="2.4s" repeatCount="indefinite" path="M208 202 V276" />
+    </circle>
+  </g>
+
+  {nodes.map((n) => (
+    <g class="node" transform={`translate(${n.x} ${n.y})`}>
+      <rect width="112" height="44" rx="9" />
+      <text x="12" y="19" class="title">{n.title}</text>
+      <text x="12" y="34" class="sub">{n.sub}</text>
+    </g>
+  ))}
+
+  {steps.map((s) => <text x={s.x} y={s.y} class="step" text-anchor="middle">{s.n}</text>)}
+</svg>
+
+<style>
+  .diagram {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .wire {
+    fill: none;
+    stroke: var(--rule-strong);
+    stroke-width: 1.5;
+  }
+  .wire.dashed {
+    stroke-dasharray: 3 4;
+  }
+  .node rect {
+    fill: var(--surface);
+    stroke: var(--rule-strong);
+    stroke-width: 1;
+  }
+  .node .title {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 650;
+    fill: var(--ink);
+  }
+  .node .sub {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    fill: var(--ink-3);
+  }
+  .step {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    fill: var(--accent);
+  }
+  .pulse {
+    fill: var(--accent);
+  }
+  .pulse.alt {
+    fill: var(--ink);
+  }
+  .pulse.soft {
+    fill: var(--ink-3);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pulses {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,171 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import Icon from "../../components/Icon.astro";
+import { orderedProjects, products } from "../../data/projects";
+import { profile } from "../../data/profile";
+
+const description =
+  "Engineering case studies by Nahabwe Brian: mobile-money payments, USSD channels, real-time bank and mobile-network payments, multi-tenant SaaS and legacy migration.";
+const schema = [
+  {
+    "@type": "CollectionPage",
+    url: `${profile.site}/work/`,
+    name: "Projects & case studies",
+    description,
+    author: { "@id": `${profile.site}/#person` },
+  },
+];
+---
+
+<BaseLayout title="Projects" description={description} schema={schema}>
+  <section class="page-head">
+    <div class="container">
+      <p class="crumb"><a href="/">Home</a> / Projects</p>
+      <h1 class="display">Projects & case studies</h1>
+      <p class="lede">
+        Each case study covers the problem, the constraints, the architecture, the decisions and the
+        alternatives I rejected, and verified outcomes. Confidential details are left out.
+      </p>
+    </div>
+  </section>
+
+  <section class="container list-wrap" aria-labelledby="cs-title">
+    <h2 id="cs-title" class="kicker">Case studies</h2>
+    <ol class="list" role="list">
+      {orderedProjects.map((p, i) => (
+        <li data-reveal><ProjectCard project={p} index={i + 1} /></li>
+      ))}
+    </ol>
+
+    <h2 class="kicker products-title">Products I run</h2>
+    <ul class="products" role="list">
+      {products.map((p) => (
+        <li class="card product" data-reveal>
+          <div class="product-head">
+            <h3>{p.name}</h3>
+            <a class="visit" href={p.href} target="_blank" rel="noopener">Visit<span class="sr-only"> {p.name}</span> <Icon name="arrowUpRight" size={14} /></a>
+          </div>
+          <p class="tagline">{p.tagline} · <span>{p.role}</span></p>
+          <ul class="points">
+            {p.points.map((pt) => <li>{pt}</li>)}
+          </ul>
+          <ul class="tags" role="list" aria-label="Technologies">
+            {p.stack.map((s) => <li>{s}</li>)}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    background: linear-gradient(160deg, var(--night) 0%, var(--night-2) 70%, #0b2552 100%);
+    color: var(--night-ink);
+    padding-block: var(--s-8) var(--s-7);
+  }
+  .crumb {
+    font-size: var(--text-sm);
+    color: var(--night-ink-2);
+  }
+  .crumb a {
+    color: var(--night-ink-2);
+  }
+  h1 {
+    margin-top: var(--s-4);
+    font-size: var(--text-hero);
+  }
+  .lede {
+    margin-top: var(--s-4);
+    max-width: 44rem;
+    font-size: var(--text-lg);
+    color: var(--night-ink-2);
+  }
+  .list-wrap {
+    padding-block: var(--section-y);
+  }
+  .list {
+    display: grid;
+    gap: var(--s-4);
+    margin-top: var(--s-5);
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 900px) {
+    .list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .products-title {
+    margin-top: var(--s-8);
+  }
+  .products {
+    display: grid;
+    gap: var(--s-4);
+    margin-top: var(--s-5);
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 900px) {
+    .products {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .product {
+    padding: var(--s-6);
+  }
+  .product-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s-4);
+  }
+  .product h3 {
+    font-size: var(--text-xl);
+  }
+  .visit {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .tagline {
+    margin-top: var(--s-2);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+  .tagline span {
+    font-weight: 400;
+    color: var(--ink-2);
+  }
+  .points {
+    display: grid;
+    gap: var(--s-2);
+    margin-top: var(--s-4);
+    padding-left: 1.1em;
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+  }
+  .points li::marker {
+    color: var(--accent);
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin-top: var(--s-5);
+    padding: 0;
+    list-style: none;
+  }
+  .tags li {
+    padding: 0.15rem 0.55rem;
+    border-radius: var(--radius-sm);
+    background: var(--surface-sunk);
+    border: 1px solid var(--rule);
+    font-size: var(--text-xs);
+    color: var(--ink-2);
+  }
+</style>

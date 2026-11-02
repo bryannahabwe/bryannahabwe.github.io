@@ -1,0 +1,125 @@
+---
+import Icon from "./Icon.astro";
+
+const pillars = [
+  {
+    icon: "rocket",
+    title: "Proven Experience",
+    body: "8+ years building fintech, education and enterprise systems — including mobile-money integrations that carry 90%+ of XENO's client deposits.",
+  },
+  {
+    icon: "layers",
+    title: "Strong Architecture",
+    body: "Designing scalable, maintainable and secure systems: multi-tenancy, event streaming with Kafka and resilient payment integrations.",
+  },
+  {
+    icon: "bulb",
+    title: "Problem Solver",
+    body: "Turning complex challenges into elegant solutions — like investing over USSD on any phone, at under 500 ms per step.",
+  },
+] as const;
+---
+
+<section id="about" class="section" aria-labelledby="about-title">
+  <div class="container grid">
+    <div class="intro" data-reveal>
+      <p class="kicker">About Me</p>
+      <h2 id="about-title" class="title">A software engineer focused on building systems that matter.</h2>
+      <p class="body">
+        I'm <strong>Nahabwe Brian</strong>, a backend engineer in Kampala with extensive experience in
+        Java, Spring Boot, Groovy/Grails and Python. I design systems that move money reliably,
+        work with great teams, and solve complex problems in fintech and beyond.
+      </p>
+      <a class="btn btn-outline btn-sm" href="/about/">Learn more about me <Icon name="arrow" size={14} /></a>
+    </div>
+
+    <ul class="pillars" role="list">
+      {pillars.map((p, i) => (
+        <li class="card pillar" data-reveal style={`transition-delay: ${i * 70}ms`}>
+          <span class="icon"><Icon name={p.icon} size={22} strokeWidth={1.7} /></span>
+          <h3>{p.title}</h3>
+          <p>{p.body}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: var(--section-y);
+  }
+  .grid {
+    display: grid;
+    gap: var(--s-7);
+  }
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 2fr);
+      align-items: center;
+      gap: var(--s-6);
+    }
+    .intro {
+      padding-right: var(--s-6);
+      border-right: 1px solid var(--rule);
+    }
+  }
+  .title {
+    margin-top: var(--s-4);
+    font-size: clamp(1.35rem, 1.15rem + 0.8vw, 1.7rem);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .body {
+    margin-top: var(--s-3);
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+  }
+  .body strong {
+    color: var(--ink);
+  }
+  .intro .btn {
+    margin-top: var(--s-5);
+  }
+  /* Three across from tablet up, so the cards never wrap 2 + 1. */
+  .pillars {
+    display: grid;
+    gap: var(--s-4);
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 720px) {
+    .pillars {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .pillar {
+    padding: var(--s-5);
+    background: linear-gradient(180deg, var(--surface-sunk), var(--surface));
+    transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .pillar:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--rule));
+  }
+  .icon {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius);
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .pillar h3 {
+    margin-top: var(--s-4);
+    font-size: var(--text-base);
+  }
+  .pillar p {
+    margin-top: var(--s-2);
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+</style>

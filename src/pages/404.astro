@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Page not found" description="This page doesn't exist.">
+  <section class="container nf">
+    <p class="eyebrow">404</p>
+    <h1 class="display title">This route returns nothing.</h1>
+    <p class="muted">The page may have moved when the site was rebuilt.</p>
+    <p><a class="link" href="/">Back to the home page →</a></p>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    display: grid;
+    gap: var(--s-4);
+    padding-block: var(--section-y);
+    min-height: 60vh;
+    align-content: center;
+  }
+  .title {
+    font-size: var(--text-hero);
+  }
+</style>

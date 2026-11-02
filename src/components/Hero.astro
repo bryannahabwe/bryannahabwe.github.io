@@ -1,0 +1,275 @@
+---
+import { Image } from "astro:assets";
+import Icon from "./Icon.astro";
+import portrait from "../assets/portrait-cutout.png";
+import { profile } from "../data/profile";
+
+const stack = [
+  { name: "java", label: "Java" },
+  { name: "spring", label: "Spring Boot" },
+  { name: "python", label: "Python" },
+  { name: "kafka", label: "Kafka" },
+  { name: "react", label: "React" },
+  { name: "postgres", label: "PostgreSQL" },
+] as const;
+---
+
+<section id="top" class="hero" aria-labelledby="hero-title">
+  <div class="glow" aria-hidden="true"></div>
+  <div class="container grid">
+    <div class="copy">
+      <p class="pill fade" style="--d: 0ms"><span class="dot" aria-hidden="true"></span>{profile.role}</p>
+      <h1 id="hero-title" class="display headline fade" style="--d: 80ms">
+        I build reliable, scalable software systems that solve <span class="hl">real&#8209;world</span> problems.
+      </h1>
+      <p class="lede fade" style="--d: 160ms">
+        Software Engineer focused on backend engineering, distributed systems, fintech
+        infrastructure and scalable application architecture.
+      </p>
+      <div class="cta fade" style="--d: 240ms">
+        <a class="btn btn-primary" href="/#projects"><Icon name="briefcase" size={17} /> View My Projects <Icon name="arrow" size={16} /></a>
+        <a class="btn btn-ghost" href="/#contact"><Icon name="mail" size={17} /> Contact Me</a>
+      </div>
+      <ul class="stack fade" style="--d: 320ms" role="list" aria-label="Core technologies">
+        {stack.map((s) => (
+          <li><span class="logo"><Icon name={s.name} size={24} /></span><span>{s.label}</span></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="visual fade" style="--d: 200ms">
+      <div class="figure">
+        <span class="panel" aria-hidden="true"></span>
+        <Image
+          src={portrait}
+          alt={`Portrait of ${profile.name}`}
+          widths={[400, 640, 853]}
+          sizes="(min-width: 1024px) 460px, 70vw"
+          loading="eager"
+          fetchpriority="high"
+          class="portrait"
+        />
+      </div>
+      <p class="script motto" aria-hidden="true">
+        Build<br /><span>Innovate</span><br /><span class="last">Grow</span>
+        <svg class="swoosh" viewBox="0 0 120 24" fill="none"><path d="M4 18C40 8 80 5 116 4M86 14c10-3 20-5 30-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, var(--night) 0%, var(--night-2) 60%, #0b2552 100%);
+    color: var(--night-ink);
+    --accent: var(--night-accent);
+    --accent-strong: #79a7ff;
+    --accent-ink: var(--night);
+    --focus: #8ab4ff;
+  }
+  .glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(42rem 30rem at 78% 30%, rgb(56 120 255 / 0.32), transparent 65%),
+      radial-gradient(30rem 22rem at 10% 110%, rgb(56 120 255 / 0.14), transparent 70%);
+    pointer-events: none;
+  }
+  .grid {
+    position: relative;
+    display: grid;
+    gap: var(--s-6);
+    padding-top: clamp(var(--s-5), 3.5vw, var(--s-6));
+  }
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      align-items: stretch;
+      gap: var(--s-5);
+    }
+  }
+  .copy {
+    padding-bottom: clamp(var(--s-5), 3.5vw, var(--s-6));
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    padding: 0.3rem 0.85rem;
+    border: 1px solid rgb(79 140 255 / 0.35);
+    border-radius: 999px;
+    background: rgb(79 140 255 / 0.12);
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 0 3px rgb(34 197 94 / 0.25);
+  }
+  .headline {
+    margin-top: var(--s-4);
+    font-size: clamp(2rem, 1.35rem + 2.4vw, 3.15rem);
+    line-height: 1.08;
+    max-width: 18ch;
+  }
+  .hl {
+    color: var(--night-accent);
+  }
+  .lede {
+    margin-top: var(--s-4);
+    max-width: 34rem;
+    font-size: var(--text-md);
+    line-height: 1.5;
+    color: var(--night-ink-2);
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-5);
+  }
+  .btn-ghost {
+    border-color: rgb(255 255 255 / 0.55);
+    color: var(--night-ink);
+  }
+  .btn-ghost:hover {
+    background: rgb(255 255 255 / 0.08);
+    border-color: #fff;
+  }
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-5);
+    margin-top: var(--s-6);
+    padding: 0;
+    list-style: none;
+  }
+  .stack li {
+    display: grid;
+    justify-items: center;
+    gap: var(--s-2);
+    font-size: var(--text-sm);
+    color: var(--night-ink-2);
+  }
+  /* Brand marks keep their official colours on a light tile. */
+  .logo {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius);
+    background: #fff;
+    color: #231f20;
+    box-shadow: 0 6px 18px -8px rgb(0 0 0 / 0.5);
+    transition: transform var(--dur) var(--ease);
+  }
+  .stack li:hover .logo {
+    transform: translateY(-2px);
+  }
+
+  /*
+   * The cut-out stands in a gradient panel whose side edges line up with the
+   * photo's own crop, so the cropped sleeves read as framed, not sliced.
+   * The head rises above the panel for depth.
+   */
+  .visual {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    min-height: 0;
+  }
+  .visual::before {
+    content: "";
+    position: absolute;
+    inset: 10% 0 0;
+    background: radial-gradient(closest-side, rgb(79 140 255 / 0.28), transparent);
+    pointer-events: none;
+  }
+  .figure {
+    position: relative;
+    height: 100%;
+    aspect-ratio: 853 / 1280;
+    max-width: 100%;
+  }
+  .panel {
+    position: absolute;
+    inset: 34% 0 0;
+    border-radius: 28px 28px 0 0;
+    background:
+      linear-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1px) 0 0 / 28px 28px,
+      linear-gradient(90deg, rgb(255 255 255 / 0.06) 1px, transparent 1px) 0 0 / 28px 28px,
+      linear-gradient(165deg, #3d78ee 0%, #1f50c4 45%, #10306f 100%);
+    box-shadow: 0 30px 60px -24px rgb(0 0 0 / 0.6), inset 0 1px 0 rgb(255 255 255 / 0.22);
+  }
+  .figure :global(.portrait) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 100%;
+  }
+  .motto {
+    position: absolute;
+    top: 10%;
+    right: -1%;
+    font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.6rem);
+    line-height: 0.95;
+    color: var(--night-ink);
+    transform: rotate(-12deg);
+    text-align: left;
+  }
+  .motto span {
+    display: inline-block;
+    margin-left: 0.6em;
+  }
+  .motto .last {
+    margin-left: 1.2em;
+  }
+  .swoosh {
+    width: 4.5rem;
+    margin-left: 1.4em;
+    color: var(--night-ink-2);
+  }
+  @media (max-width: 1023px) {
+    .visual {
+      order: -1;
+      justify-self: center;
+      width: min(72%, 20rem);
+    }
+    .figure {
+      width: 100%;
+      height: auto;
+    }
+    /* Floating above the copy, so round the bottom too and clip the photo to it. */
+    .panel {
+      border-radius: 24px;
+    }
+    .figure :global(.portrait) {
+      clip-path: inset(0 round 0 0 24px 24px);
+    }
+    .copy {
+      padding-top: 0;
+    }
+    .motto {
+      right: -18%;
+    }
+  }
+
+  .fade {
+    animation: rise var(--dur-slow) var(--ease) both;
+    animation-delay: var(--d);
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+</style>

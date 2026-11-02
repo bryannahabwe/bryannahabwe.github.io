@@ -1,0 +1,112 @@
+---
+import Icon from "./Icon.astro";
+import SystemDiagram from "./SystemDiagram.astro";
+
+const walkthrough = [
+  { n: "01", title: "Request", body: "A customer app or USSD session reaches the API gateway — OAuth2 and rate limits first." },
+  { n: "02", title: "Route", body: "The payments service assigns an idempotency reference and applies per-tenant timeouts and circuit breakers." },
+  { n: "03", title: "Collect", body: "The call goes to the MTN or Airtel Open API. Money-moving POSTs are never retried blindly." },
+  { n: "04", title: "Confirm", body: "The provider's callback is written to an outbox and published to Kafka, so it survives a broker outage." },
+  { n: "05", title: "Settle", body: "The PostgreSQL ledger is updated; reconciliation catches anything without a final status." },
+];
+---
+
+<section id="how-i-build" class="section" aria-labelledby="how-title">
+  <div class="container grid">
+    <div class="copy" data-reveal>
+      <h2 id="how-title" class="kicker">How I Build</h2>
+      <p class="title">The shape of the payment systems I build.</p>
+      <ol class="steps" role="list">
+        {walkthrough.map((s) => (
+          <li>
+            <span class="n">{s.n}</span>
+            <span><strong>{s.title}.</strong> {s.body}</span>
+          </li>
+        ))}
+      </ol>
+      <p class="obs">Every hop is traced, measured and alerted on in Grafana.</p>
+      <a class="btn btn-outline btn-sm" href="/work/mobile-money-gateway/">
+        Read the mobile-money case study <Icon name="arrow" size={14} />
+      </a>
+    </div>
+
+    <figure class="card stage" data-reveal>
+      <SystemDiagram />
+      <figcaption>Illustrative — simplified from real production systems.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: var(--s-6) var(--section-y);
+  }
+  .grid {
+    display: grid;
+    gap: var(--s-7);
+    align-items: center;
+  }
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: var(--s-8);
+    }
+  }
+  .title {
+    font-family: var(--font-display);
+    margin-top: var(--s-4);
+    font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .steps {
+    display: grid;
+    gap: var(--s-3);
+    margin-top: var(--s-5);
+    padding: 0;
+    list-style: none;
+  }
+  .steps li {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: var(--s-2);
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+  }
+  .steps strong {
+    color: var(--ink);
+    font-weight: 650;
+  }
+  .n {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--accent);
+    padding-top: 0.2em;
+  }
+  .obs {
+    margin-top: var(--s-4);
+    padding-left: 2.5rem;
+    font-size: var(--text-sm);
+    color: var(--ink-3);
+  }
+  .copy .btn {
+    margin-top: var(--s-5);
+  }
+  .stage {
+    margin: 0;
+    padding: clamp(var(--s-4), 3vw, var(--s-6));
+    background:
+      radial-gradient(circle at 1px 1px, var(--rule) 1px, transparent 0) 0 0 / 18px 18px,
+      var(--surface-sunk);
+  }
+  figcaption {
+    margin-top: var(--s-4);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+</style>
