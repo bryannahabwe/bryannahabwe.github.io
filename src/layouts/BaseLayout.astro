@@ -2,7 +2,7 @@
 import "../styles/global.css";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
-import { profile, socials } from "../data/profile";
+import { profile, profiles } from "../data/profile";
 import portrait from "../assets/portrait.jpg";
 import { getImage } from "astro:assets";
 import bodyLatin from "@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url";
@@ -32,6 +32,10 @@ const person = {
   "@type": "Person",
   "@id": `${profile.site}/#person`,
   name: profile.name,
+  // Both name orders are in use; tell search engines they are the same person.
+  alternateName: "Brian Nahabwe",
+  givenName: "Brian",
+  familyName: "Nahabwe",
   jobTitle: profile.role,
   description: profile.summary,
   url: `${profile.site}/`,
@@ -46,7 +50,7 @@ const person = {
     "Application security", "Docker", "Kubernetes", "React",
   ],
   knowsLanguage: profile.languages,
-  sameAs: socials.map((s) => s.href),
+  sameAs: [...profiles],
 };
 
 const graph = {

@@ -25,6 +25,19 @@ export const profile = {
   languages: ["English", "Runyankole", "Luganda"],
 } as const;
 
+/**
+ * Every public profile that is the same person. Feeds Person.sameAs so search
+ * engines can merge them into one entity; keep the bios on them identical.
+ */
+export const profiles = [
+  "https://github.com/bryannahabwe",
+  "https://www.linkedin.com/in/nahabwe-brian/",
+  "https://x.com/nahabwebryn",
+  "https://www.kaggle.com/nahabwebrian",
+  "https://www.hackerrank.com/profile/briannahabwe",
+  "https://www.hackerearth.com/@nahabwe1",
+] as const;
+
 export const socials = [
   { label: "GitHub", handle: "bryannahabwe", href: "https://github.com/bryannahabwe" },
   { label: "LinkedIn", handle: "nahabwe-brian", href: "https://www.linkedin.com/in/nahabwe-brian/" },
