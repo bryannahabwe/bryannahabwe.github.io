@@ -1,0 +1,26 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Service block for the SHARED compose file on the server: /opt/cognix/docker-compose.yml
+# Paste the `bryan-portfolio:` block under `services:` (same level as umbatech-website).
+# It needs no .env values: the site is fully static.
+#
+# The code is checked out to /opt/cognix/myportfolio by the first CI deploy.
+# nginx proxies bryan.umbatech.com → http://bryan-portfolio:80. The nginx container
+# is on `moozo_network`, so this service must join it (already declared in the shared file).
+# ─────────────────────────────────────────────────────────────────────────────
+services:
+  bryan-portfolio:
+    build:
+      context: ./myportfolio
+    image: bryan-portfolio:latest
+    container_name: bryan-portfolio
+    restart: unless-stopped
+    expose:
+      - "80"
+    networks:
+      - moozo_network   # the network the shared nginx container is on
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/robots.txt"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

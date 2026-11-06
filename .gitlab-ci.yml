@@ -1,0 +1,66 @@
+# Portfolio (bryan.umbatech.com) — GitLab CI/CD on the cognix server.
+# GitHub (bryannahabwe.github.io) deploys separately via .github/workflows/deploy.yml.
+#
+#  check  → astro check + build + internal link check on every push and merge request
+#  deploy → on main: SSH to the server, update the checkout, rebuild and restart
+#           the container, then verify it answers.
+#
+# Required CI/CD variables (Settings → CI/CD → Variables; may be set at group level):
+#   SERVER_IP        server address                        (same as the other cognix apps)
+#   SERVER_SSH_KEY   base64-encoded private SSH key        (masked)
+# Optional:
+#   DEPLOY_PATH      default /opt/cognix/myportfolio
+#   COMPOSE_FILE     default /opt/cognix/docker-compose.yml (must define the bryan-portfolio service)
+
+stages:
+  - check
+  - deploy
+
+variables:
+  DEPLOY_PATH: /opt/cognix/myportfolio
+  COMPOSE_FILE: /opt/cognix/docker-compose.yml
+
+check:
+  stage: check
+  image: node:22-alpine
+  cache:
+    key:
+      files: [package-lock.json]
+    paths: [.npm]
+  script:
+    - npm ci --cache .npm --prefer-offline --no-audit --no-fund
+    - npm run build
+    - npm run check:links
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH
+
+deploy:
+  stage: deploy
+  image: alpine:latest
+  needs: [check]
+  resource_group: production   # never run two deploys at once
+  environment:
+    name: production
+    url: https://bryan.umbatech.com
+  before_script:
+    - apk add --no-cache openssh-client
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - echo "$SERVER_SSH_KEY" | base64 -d > ~/.ssh/id_ed25519
+    - chmod 600 ~/.ssh/id_ed25519
+    - ssh-keyscan -H "$SERVER_IP" >> ~/.ssh/known_hosts
+  script:
+    # Settings go to the remote script over stdin, so the job token never appears
+    # in the server's process list or the job log.
+    - |
+      q() { printf "%s='%s'\n" "$1" "$(printf '%s' "$2" | sed "s/'/'\\\\''/g")"; }
+      {
+        q DEPLOY_PATH "$DEPLOY_PATH"
+        q COMPOSE_FILE "$COMPOSE_FILE"
+        q REPO_URL "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git"
+        q BRANCH "$CI_COMMIT_BRANCH"
+        q COMMIT_SHA "$CI_COMMIT_SHA"
+        cat deploy/remote-deploy.sh
+      } | ssh root@"$SERVER_IP" 'sh -s'
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"

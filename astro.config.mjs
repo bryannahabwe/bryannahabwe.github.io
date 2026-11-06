@@ -1,9 +1,9 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
-// User site served from the root of bryannahabwe.github.io (gh-pages branch).
+// Canonical URL. Served at bryan.umbatech.com (cognix server) and mirrored at bryannahabwe.github.io (GitHub Pages).
 export default defineConfig({
-  site: "https://bryannahabwe.github.io",
+  site: "https://bryan.umbatech.com",
   trailingSlash: "always",
   build: { format: "directory" },
   integrations: [sitemap()],

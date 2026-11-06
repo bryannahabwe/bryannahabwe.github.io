@@ -12,7 +12,7 @@ export const profile = {
   yearsLabel: "8+ years",
   employer: { name: "XENO Investment", url: "https://myxeno.com/" },
   email: "nahabwebrian24@gmail.com",
-  site: "https://bryannahabwe.github.io",
+  site: "https://bryan.umbatech.com",
   /** Google Search Console "HTML tag" verification code (the content="…" value). Empty = no tag. */
   googleSiteVerification: "",
   /**

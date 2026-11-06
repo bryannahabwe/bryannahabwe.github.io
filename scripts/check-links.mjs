@@ -39,7 +39,7 @@ for (const file of htmlFiles) {
   for (const [, attr, raw] of html.matchAll(/\s(href|src)="([^"]+)"/g)) {
     if (/^(mailto:|tel:|data:)/.test(raw)) continue;
     if (/^https?:\/\//.test(raw)) {
-      if (!raw.startsWith("https://bryannahabwe.github.io")) external.add(raw);
+      if (!raw.startsWith("https://bryan.umbatech.com")) external.add(raw);
       continue;
     }
     const url = new URL(raw.replace(/&amp;/g, "&"), `https://x${page}`);
